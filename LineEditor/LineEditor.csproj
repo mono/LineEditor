@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Mono.Terminal</PackageId>
+    <PackageVersion>5.4.0</PackageVersion>
+    <Authors>Miguel de Icaza</Authors>
+    <PackageIconUrl>https://xamarin-component-icons.s3.amazonaws.com/mono.terminal.png</PackageIconUrl>
+    <PackageLicenseUrl>https://components.xamarin.com/license/mono.terminal</PackageLicenseUrl>
+    <Owners>Xamarin</Owners>
+    <PackageProjectUrl>https://github.com/mono/LineEditor</PackageProjectUrl>
+    <PackageReleaseNotes>Release 5.4.0 includes new documentation.</PackageReleaseNotes>
+    <Summary>An interactive commmand line editor</Summary>
+    <Title>Mono.Terminal - LineEdit, GetLine</Title>
+    <Description>Interactive Command Line Editor</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -11,4 +22,7 @@
     <DebugType></DebugType>
     <DocumentationFile>bin\Release\netstandard2.0\LineEditor.xml</DocumentationFile>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.1.276" />
+  </ItemGroup>
 </Project>
