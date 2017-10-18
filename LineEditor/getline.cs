@@ -2,10 +2,11 @@
 // getline.cs: A command line editor
 //
 // Authors:
-//   Miguel de Icaza (miguel@novell.com)
+//   Miguel de Icaza (miguel@microsoft.com)
 //
 // Copyright 2008 Novell, Inc.
 // Copyright 2016 Xamarin Inc
+// Copyright 2017 Microsoft
 //
 // Completion wanted:
 //
@@ -46,22 +47,247 @@ using System.Reflection;
 
 namespace Mono.Terminal {
 
+	/// <summary>
+	/// Interactive line editor.
+	/// </summary>
+	/// <remarks>
+	///   <para>
+	///     LineEditor is an interative line editor for .NET applications that provides
+	///     editing capabilities for an input line with common editing capabilities and
+	///     navigation expected in modern application as well as history, incremental
+	///     search over the history, completion (both textual or visual) and various 
+	///     Emacs-like commands.
+	///   </para>
+	///   <para>
+	///     When you create your line editor, you can pass the name of your application, 
+	///     which will be used to load and save the history of commands entered by the user
+	///     for this particular application.    
+	///   </para>
+	///   <para>
+	///     
+	///   </para>
+	///   <example>
+	///     The following example shows how you can instantiate a line editor that
+	///     can provide code completion for some words when the user presses TAB
+	///     and how the user can edit them. 
+	///     <code>
+	/// LineEditor le = new LineEditor ("myshell") { HeuristicsMode = "csharp" };
+	/// le.AutoCompleteEvent += delegate (string line, int point){
+	///     string prefix = "";
+	///     var completions = new string [] { 
+	///         "One", "Two", "Three", "Four", "Five", 
+	///          "Six", "Seven", "Eight", "Nine", "Ten" 
+	///     };
+	///     return new Mono.Terminal.LineEditor.Completion(prefix, completions);
+	/// };
+	///		
+	/// string s;
+	///		
+	/// while ((s = le.Edit("shell> ", "")) != null)
+	///    Console.WriteLine("You typed: [{0}]", s);			}
+	///     </code>
+	///   </example>
+	///   <para>
+	///      Users can use the cursor keys to navigate both the text on the current
+	///      line, or move back and forward through the history of commands that have
+	///      been entered.   
+	///   </para>
+	///   <para>
+	///     The interactive commands and keybindings are inspired by the GNU bash and
+	///     GNU readline capabilities and follow the same concepts found there.
+	///   </para>
+	///   <para>
+	///      Copy and pasting works like bash, deleted words or regions are added to 
+	///      the kill buffer.   Repeated invocations of the same deleting operation will
+	///      append to the kill buffer (for example, repeatedly deleting words) and to
+	///      paste the results you would use the Control-y command (yank).
+	///   </para>
+	///   <para>
+	///      The history search capability is triggered when you press 
+	///      Control-r to start a reverse interactive-search
+	///      and start typing the text you are looking for, the edited line will
+	///      be updated with matches.  Typing control-r again will go to the next
+	///      match in history and so on.
+	///   </para>
+	///   <list type="table"> 
+	///     <listheader>
+	///       <term>Shortcut</term>
+	///       <description>Action performed</description>
+	///     </listheader>
+	///     <item>
+	///        <term>Left cursor, Control-b</term>
+	///        <description>
+	///          Moves the editing point left.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Right cursor, Control-f</term>
+	///        <description>
+	///          Moves the editing point left.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Alt-B</term>
+	///        <description>
+	///          Moves one word back.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Alt-F</term>
+	///        <description>
+	///          Moves one word forward.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Up cursor, Control-p</term>
+	///        <description>
+	///          Selects the previous item in the editing history.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Down cursor, Control-n</term>
+	///        <description>
+	///          Selects the next item in the editing history.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Home Key, Control-a</term>
+	///        <description>
+	///          Moves the cursor to the beginning of the line.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>End key, Control-e</term>
+	///        <description>
+	///          Moves the cursor to the end of the line.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Delete, Control-d</term>
+	///        <description>
+	///          Deletes the character in front of the cursor.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Backspace</term>
+	///        <description>
+	///          Deletes the character behind the cursor.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Tab</term>
+	///        <description>
+	///           Triggers the completion and invokes the AutoCompleteEvent which gets
+	///           both the line contents and the position where the cursor is.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Control-k</term>
+	///        <description>
+	///          Deletes the text until the end of the line and replaces the kill buffer
+	///          with the deleted text.   You can paste this text in a different place by
+	///          using Control-y.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Control-l refresh</term>
+	///        <description>
+	///           Clears the screen and forces a refresh of the line editor, useful when
+	///           a background process writes to the console and garbles the contents of
+	///           the screen.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Control-r</term>
+	///        <description>
+	///          Initiates the reverse search in history.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Alt-D, Alt-backspace</term>
+	///        <description>
+	///           Deletes the word behind the cursor and adds it to the kill ring.  You 
+	///           can paste the contents of the kill ring with Control-y.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Alt-D</term>
+	///        <description>
+	///           Deletes the word above the cursor and adds it to the kill ring.  You 
+	///           can paste the contents of the kill ring with Control-y.
+	///        </description>
+	///     </item>
+	///     <item>
+	///        <term>Contro-q</term>
+	///        <description>
+	///          Quotes the next input character, to prevent the normal processing of
+	///          key handling to take place.
+	///        </description>
+	///     </item>
+	///   </list>
+	/// </remarks>
 	public class LineEditor {
 
+		/// <summary>
+		/// Completion results returned by the completion handler.
+		/// </summary>
+		/// <remarks>
+		/// You create an instance of this class to return the completion
+		/// results for the text at the specific position.   The prefix parameter
+		/// indicates the common prefix in the results, and the results contain the
+		/// results without the prefix.   For example, when completing "ToString" and "ToDate"
+		/// prefix would be "To" and the completions would be "String" and "Date".
+		/// </remarks>
 		public class Completion {
+			/// <summary>
+			/// Array of results, with the stem removed.
+			/// </summary>
 			public string [] Result;
+
+			/// <summary>
+			/// Shared prefix for the completion results.
+			/// </summary>
 			public string Prefix;
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="T:Mono.Terminal.LineEditor.Completion"/> class.
+			/// </summary>
+			/// <param name="prefix">Common prefix for all results, an be null.</param>
+			/// <param name="result">Array of possible completions.</param>
 			public Completion (string prefix, string [] result)
 			{
 				Prefix = prefix;
 				Result = result;
 			}
 		}
-		
+
+		/// <summary>
+		/// Method signature for auto completion handlers.
+		/// </summary>
+		/// <remarks>
+		/// The completion handler receives the text as it is being edited as
+		/// well as the position of the cursor in that line.   The method
+		/// must return an instance of Completion with the possible completions.
+		/// </remarks>
 		public delegate Completion AutoCompleteHandler (string text, int pos);
 
-		// null does nothing, "csharp" uses some heuristics that make sense for C#
+		/// <summary>
+		/// The heuristics mode used by code completion.
+		/// </summary>
+		/// <remarks>
+		///    <para>
+		///      This controls the heuristics style used to show the code
+		///      completion popup as well as when to accept an entry.
+		///    </para>
+		///    <para>
+		///      The default value is null which requires the user to explicitly
+		///      use the TAB key to trigger a completion.    
+		///    </para>
+		///    <para>
+		///      Another possible value is "csharp" which will trigger auto-completion when a 
+		///      "." is entered.
+		///    </para>
+		/// </remarks>
 		public string HeuristicsMode;
 		
 		//static StreamWriter log;
@@ -177,8 +403,19 @@ namespace Mono.Terminal {
 
 		static Handler [] handlers;
 
+		/// <summary>
+		/// Initializes a new instance of the LineEditor, using the specified name for 
+		/// retrieving and storing the history.   The history will default to 10 entries.
+		/// </summary>
+		/// <param name="name">Prefix for storing the editing history.</param>
 		public LineEditor (string name) : this (name, 10) { }
 		
+		/// <summary>
+		/// Initializes a new instance of the LineEditor, using the specified name for 
+		/// retrieving and storing the history.   
+		/// </summary>
+		/// <param name="name">Prefix for storing the editing history.</param>
+		/// <param name="histsize">Number of entries to store in the history file.</param>
 		public LineEditor (string name, int histsize)
 		{
 			handlers = new Handler [] {
@@ -1170,7 +1407,13 @@ namespace Mono.Terminal {
 			Render ();
 			ForceCursor (cursor);
 		}
-		
+
+		/// <summary>
+		/// Edit a line, and provides both a prompt and the initial contents to edit
+		/// </summary>
+		/// <returns>The edit.</returns>
+		/// <param name="prompt">Prompt shown to edit the line.</param>
+		/// <param name="initial">Initial contents, can be null.</param>
 		public string Edit (string prompt, string initial)
 		{
 			edit_thread = Thread.CurrentThread;
@@ -1214,7 +1457,10 @@ namespace Mono.Terminal {
 
 			return result;
 		}
-		
+
+		/// <summary>
+		/// Triggers the history to be written at this point, usually not necessary, history is saved on each line edited.
+		/// </summary>
 		public void SaveHistory ()
 		{
 			if (history != null) {
@@ -1222,6 +1468,10 @@ namespace Mono.Terminal {
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a value indicating whether hitting the TAB key before any text exists triggers completion or inserts a "tab" character into the buffer.  This is useful to allow users to copy/paste code that might contain whitespace at the start and you want to preserve it.
+		/// </summary>
+		/// <value><c>true</c> if tab at start completes; otherwise, <c>false</c>.</value>
 		public bool TabAtStartCompletes { get; set; }
 			
 		//
