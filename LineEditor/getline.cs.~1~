@@ -123,17 +123,17 @@ namespace Mono.Terminal {
 	///     <item>
 	///        <term>Right cursor, Control-f</term>
 	///        <description>
-	///          Moves the editing point right.
+	///          Moves the editing point left.
 	///        </description>
 	///     </item>
 	///     <item>
-	///        <term>Alt-b</term>
+	///        <term>Alt-B</term>
 	///        <description>
 	///          Moves one word back.
 	///        </description>
 	///     </item>
 	///     <item>
-	///        <term>Alt-f</term>
+	///        <term>Alt-F</term>
 	///        <description>
 	///          Moves one word forward.
 	///        </description>
@@ -151,7 +151,7 @@ namespace Mono.Terminal {
 	///        </description>
 	///     </item>
 	///     <item>
-	///        <term>Home key, Control-a</term>
+	///        <term>Home Key, Control-a</term>
 	///        <description>
 	///          Moves the cursor to the beginning of the line.
 	///        </description>
@@ -204,21 +204,21 @@ namespace Mono.Terminal {
 	///        </description>
 	///     </item>
 	///     <item>
-	///        <term>Alt-backspace</term>
+	///        <term>Alt-D, Alt-backspace</term>
 	///        <description>
 	///           Deletes the word behind the cursor and adds it to the kill ring.  You 
 	///           can paste the contents of the kill ring with Control-y.
 	///        </description>
 	///     </item>
 	///     <item>
-	///        <term>Alt-d</term>
+	///        <term>Alt-D</term>
 	///        <description>
 	///           Deletes the word above the cursor and adds it to the kill ring.  You 
 	///           can paste the contents of the kill ring with Control-y.
 	///        </description>
 	///     </item>
 	///     <item>
-	///        <term>Control-q</term>
+	///        <term>Contro-q</term>
 	///        <description>
 	///          Quotes the next input character, to prevent the normal processing of
 	///          key handling to take place.
