@@ -5,3 +5,4 @@ script:
   - msbuild /p:Configuration=Release LineEditor.sln
 mono: "5.4.0"
 os: "osx"
+
