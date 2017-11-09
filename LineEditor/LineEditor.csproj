@@ -5,14 +5,15 @@
     <PackageId>Mono.Terminal</PackageId>
     <PackageVersion>5.4.0</PackageVersion>
     <Authors>Miguel de Icaza</Authors>
-    <PackageIconUrl>https://xamarin-component-icons.s3.amazonaws.com/mono.terminal.png</PackageIconUrl>
-    <PackageLicenseUrl>https://components.xamarin.com/license/mono.terminal</PackageLicenseUrl>
+    <PackageIconUrl>https://github.com/mono/LineEditor/raw/master/icon_128x128.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/mono/LineEditor/blob/master/LICENSE</PackageLicenseUrl>
     <Owners>Xamarin</Owners>
     <PackageProjectUrl>https://github.com/mono/LineEditor</PackageProjectUrl>
     <PackageReleaseNotes>Release 5.4.0 includes new documentation.</PackageReleaseNotes>
     <Summary>An interactive commmand line editor</Summary>
     <Title>Mono.Terminal - LineEdit, GetLine</Title>
     <Description>Interactive Command Line Editor</Description>
+    <InferPackageContents>false</InferPackageContents>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -23,6 +24,13 @@
     <DocumentationFile>bin\Release\netstandard2.0\LineEditor.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NuGet.Build.Packaging" Version="0.1.276" />
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0" />
+  </ItemGroup>
+
+  <!-- Workaround for 'Nugetizer packs reference assemblies into NuGet package' issue -->
+  <!-- https://github.com/NuGet/Home/issues/5800 -->
+  <ItemGroup>
+    <PackageFile Include="$(OutputPath)LineEditor.dll" PackagePath="lib/netstandard2.0/LineEditor.dll" />
+    <PackageFile Include="$(OutputPath)LineEditor.xml" PackagePath="lib/netstandard2.0/LineEditor.xml" />
   </ItemGroup>
 </Project>
