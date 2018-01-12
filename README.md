@@ -25,6 +25,9 @@ can provide code completion for some words when the user presses TAB
 and how the user can edit them. 
 
 ```csharp
+using Mono.Terminal;
+using System;
+
 class Demo {
     static void Main ()
     {
