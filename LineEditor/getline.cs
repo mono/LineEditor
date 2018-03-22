@@ -218,6 +218,12 @@ namespace Mono.Terminal {
 	///        </description>
 	///     </item>
 	///     <item>
+	///        <term>Control-y</term>
+	///        <description>
+	///           Pastes the content of the kill ring into the current position.
+	///        </description>
+	///     </item>
+	///     <item>
 	///        <term>Control-q</term>
 	///        <description>
 	///          Quotes the next input character, to prevent the normal processing of
