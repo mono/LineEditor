@@ -44,6 +44,7 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Mono.Terminal {
 
@@ -409,6 +410,8 @@ namespace Mono.Terminal {
 
 		static Handler [] handlers;
 
+		private readonly bool isWindows;
+
 		/// <summary>
 		/// Initializes a new instance of the LineEditor, using the specified name for 
 		/// retrieving and storing the history.   The history will default to 10 entries.
@@ -467,6 +470,7 @@ namespace Mono.Terminal {
 
 			history = new History (name, histsize);
 
+			isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 			GetUnixConsoleReset ();
 			//if (File.Exists ("log"))File.Delete ("log");
 			//log = File.CreateText ("log"); 
@@ -482,9 +486,7 @@ namespace Mono.Terminal {
 			//
 			// On Unix, we want to be able to reset the color for the pop-up completion
 			//
-			int p = (int) Environment.OSVersion.Platform;
-			var is_unix = (p == 4) || (p == 128);
-			if (!is_unix)
+			if (isWindows)
 				return;
 
 			// Sole purpose of this call is to initialize the Terminfo driver
@@ -770,8 +772,7 @@ namespace Mono.Terminal {
 			// Ensure we have space, determine window size
 			int window_height = System.Math.Min (completions.Length, Console.WindowHeight/5);
 			int target_line = Console.WindowHeight-window_height-1;
-			if (Console.CursorTop > target_line){
-				var saved_left = Console.CursorLeft;
+			if (!isWindows && Console.CursorTop > target_line){
 				var delta = Console.CursorTop-target_line;
 				Console.CursorLeft = 0;
 				Console.CursorTop = Console.WindowHeight-1;
