@@ -771,10 +771,9 @@ namespace Mono.Terminal {
 			int window_height = System.Math.Min (completions.Length, Console.WindowHeight/5);
 			int target_line = Console.WindowHeight-window_height-1;
 			if (Console.CursorTop > target_line){
-				var saved_left = Console.CursorLeft;
-				var delta = Console.CursorTop-target_line;
+				var delta = Console.CursorTop-target_line+window_height;
 				Console.CursorLeft = 0;
-				Console.CursorTop = Console.WindowHeight-1;
+            Console.CursorTop = target_line;
 				for (int i = 0; i < delta+1; i++){
 					for (int c = Console.WindowWidth; c > 0; c--)
 						Console.Write (" "); // To debug use ("{0}", i%10);
