@@ -14,23 +14,15 @@
     <Title>Mono.Terminal - LineEdit, GetLine</Title>
     <Description>Interactive Command Line Editor</Description>
     <InferPackageContents>false</InferPackageContents>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DocumentationFile>bin\Debug\netstandard2.0\LineEditor.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType></DebugType>
     <DocumentationFile>bin\Release\netstandard2.0\LineEditor.xml</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0" />
-  </ItemGroup>
-
-  <!-- Workaround for 'Nugetizer packs reference assemblies into NuGet package' issue -->
-  <!-- https://github.com/NuGet/Home/issues/5800 -->
-  <ItemGroup>
-    <PackageFile Include="$(OutputPath)LineEditor.dll" PackagePath="lib/netstandard2.0/LineEditor.dll" />
-    <PackageFile Include="$(OutputPath)LineEditor.xml" PackagePath="lib/netstandard2.0/LineEditor.xml" />
-  </ItemGroup>
 </Project>

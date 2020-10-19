@@ -1,0 +1,40 @@
+name: $(Build.SourceBranchName)-$(Build.SourceVersion)-$(Rev:r)
+
+trigger:
+  - master
+  - refs/tags/*
+
+pr:
+  - master
+
+resources:
+  repositories:
+    - repository: internal-templates
+      type: github
+      name: xamarin/yaml-templates
+      endpoint: xamarin
+    - repository: components
+      type: github
+      name: xamarin/XamarinComponents
+      endpoint: xamarin
+
+jobs:
+  - template: .ci/build.yml@components
+    parameters:
+      publishJob: windows
+      buildType: none
+      areaPath: 'DevDiv\Xamarin SDK'
+      linuxImage: '' # skip linux builds
+      skipValidation: true
+      steps:
+        - task: MSBuild@1
+          displayName: msbuild LineEditor.sln
+          inputs:
+            solution: LineEditor.sln
+            configuration: Release
+            msbuildArguments: /restore /t:Pack /p:PackageOutputPath=$(Build.SourcesDirectory)/output
+
+  - ${{ if eq(variables['System.TeamProject'], 'devdiv') }}:
+    - template: sign-artifacts/jobs/v1.yml@internal-templates
+      parameters:
+        dependsOn: [ 'build' ]
