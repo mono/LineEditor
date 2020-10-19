@@ -25,7 +25,7 @@ jobs:
       buildType: none
       areaPath: 'DevDiv\Xamarin SDK'
       linuxImage: '' # skip linux builds
-      skipValidation: true
+      validPackagePrefixes: [ 'Mono' ]
       steps:
         - task: MSBuild@1
           displayName: msbuild LineEditor.sln
