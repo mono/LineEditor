@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Mono.Terminal</PackageId>
-    <PackageVersion>5.4.0</PackageVersion>
+    <PackageVersion>5.4.1</PackageVersion>
     <Authors>Miguel de Icaza</Authors>
     <PackageIconUrl>https://github.com/mono/LineEditor/raw/master/icon_128x128.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/mono/LineEditor/blob/master/LICENSE</PackageLicenseUrl>
