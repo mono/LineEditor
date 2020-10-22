@@ -38,4 +38,5 @@ jobs:
     - template: sign-artifacts/jobs/v1.yml@internal-templates
       parameters:
         dependsOn: [ 'build' ]
-        CodeSignOverride: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+        signTags: true
+        realSign: true
