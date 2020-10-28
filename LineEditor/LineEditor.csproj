@@ -3,14 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Mono.Terminal</PackageId>
-    <PackageVersion>5.4.1</PackageVersion>
+    <PackageVersion>5.4.2</PackageVersion>
     <Authors>Microsoft</Authors>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageIconUrl>https://github.com/mono/LineEditor/raw/master/icon_128x128.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/mono/LineEditor/blob/master/LICENSE</PackageLicenseUrl>
     <Owners>Xamarin</Owners>
     <PackageProjectUrl>https://github.com/mono/LineEditor</PackageProjectUrl>
-    <PackageReleaseNotes>Release 5.4.1 improves Windows support.</PackageReleaseNotes>
+    <PackageReleaseNotes>Release 5.4.2 improves Windows support.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Summary>An interactive commmand line editor</Summary>
     <Title>Mono.Terminal - LineEdit, GetLine</Title>
@@ -24,7 +24,9 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DocumentationFile>bin\Debug\netstandard2.0\LineEditor.xml</DocumentationFile>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DocumentationFile>bin\Release\netstandard2.0\LineEditor.xml</DocumentationFile>
   </PropertyGroup>
+
 </Project>
