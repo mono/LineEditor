@@ -1,9 +1,0 @@
-language: csharp
-solution: LineEditor.sln
-script:
-  - cd $TRAVIS_BUILD_DIR/
-  - msbuild /p:Configuration=Release LineEditor.sln
-dotnet: "2.0.0"
-mono: "5.4.0"
-os: "osx"
-
