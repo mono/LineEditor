@@ -1,11 +1,11 @@
 name: $(Build.SourceBranchName)-$(Build.SourceVersion)-$(Rev:r)
 
 trigger:
-  - master
+  - main
   - refs/tags/*
 
 pr:
-  - master
+  - main
 
 resources:
   repositories:
