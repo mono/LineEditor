@@ -8,7 +8,7 @@ Emacs-like commands.
 
 The code was originally developed for Mono's interactive C# shell:
 
-![Screenshot of csharp with a completion window](https://github.com/mono/LineEditor/blob/master/LineEditor/csharp.png)
+![Screenshot of csharp with a completion window](https://github.com/mono/LineEditor/blob/main/LineEditor/csharp.png)
 
 When you create your line editor, you can pass the name of your application, 
 which will be used to load and save the history of commands entered by the user

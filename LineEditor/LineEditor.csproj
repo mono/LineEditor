@@ -6,8 +6,8 @@
     <PackageVersion>5.4.2</PackageVersion>
     <Authors>Microsoft</Authors>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
-    <PackageIconUrl>https://github.com/mono/LineEditor/raw/master/icon_128x128.png</PackageIconUrl>
-    <PackageLicenseUrl>https://github.com/mono/LineEditor/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://github.com/mono/LineEditor/raw/main/icon_128x128.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/mono/LineEditor/blob/main/LICENSE</PackageLicenseUrl>
     <Owners>Xamarin</Owners>
     <PackageProjectUrl>https://github.com/mono/LineEditor</PackageProjectUrl>
     <PackageReleaseNotes>Release 5.4.2 improves Windows support.</PackageReleaseNotes>
